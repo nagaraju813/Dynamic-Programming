@@ -1,0 +1,38 @@
+class Solution {
+    public int minTaps(int n, int[] ranges) {
+        int[] maxReach = new int[n + 1];
+        
+        // Build the max reach from each position
+        for (int i = 0; i <= n; i++) {
+            int left = Math.max(0, i - ranges[i]);
+            int right = Math.min(n, i + ranges[i]);
+            maxReach[left] = Math.max(maxReach[left], right);
+        }
+        
+        int taps = 0, currentEnd = 0, nextEnd = 0;
+        
+        for (int i = 0; i <= n; i++) {
+            if (i > nextEnd) return -1; // Can't reach this point
+            
+            if (i > currentEnd) {
+                taps++;
+                currentEnd = nextEnd;
+            }
+            nextEnd = Math.max(nextEnd, maxReach[i]);
+        }
+        
+        return taps;
+    }
+}
+
+
+//Intuition Behind currentEnd and nextEnd
+Variable	Meaning
+currentEnd	How far we've covered with already opened taps
+nextEnd	The furthest we can go from current or earlier positions
+
+When i > currentEnd, it means we’ve reached the end of coverage → must open a new tap.
+
+nextEnd keeps expanding as we loop forward and see better tap coverage.
+
+If i > nextEnd ever happens, there's a gap in coverage → return -1.//
