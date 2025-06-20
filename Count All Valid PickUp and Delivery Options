@@ -1,0 +1,14 @@
+class Solution {
+    static int mod=1000000007;
+    public int countOrders(int n) {
+        long ans= validOptions(n);
+        return (int) ans;
+    }
+
+    private long validOptions(int n) {
+        if (n==1) return 1;
+
+        long ans=(validOptions(n-1)*(2*n-1)*(n))%mod;
+        return ans;
+    }
+}
